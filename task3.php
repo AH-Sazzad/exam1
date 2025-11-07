@@ -1,5 +1,8 @@
 <?php 
 session_start();
+
+include_once ( __DIR__."/src/functions.php");
+// for session 
 //  default Session value for avoid error undefined array key
 $_SESSION["name"]="";
     $_SESSION["amount"]="";
@@ -14,6 +17,44 @@ if(isset($_POST["add_btn"])){
     
 }
 }
+// for recursive function
+ $int_of_recursive_string=[];
+if(isset($_POST["add_recursive"])){
+    $recursive_string=trim($_POST['recursive_string']);
+    $array_of_recursive_string=preg_split("/[\s,.| ]+/", $recursive_string);
+    // this is string but i need int for sum 
+    $int_of_recursive_string=array_map("intval",$array_of_recursive_string);
+
+
+}
+
+// for discount function
+ $int_of_add_prices=[];
+if(isset($_POST["add_prices"])){
+    $add_prices=trim($_POST['all_prices']);
+    $array_of_add_prices=preg_split("/[\s,.| ]+/", $add_prices);
+    // this is string but i need int for sum 
+    $int_of_add_prices=array_map("intval",$array_of_add_prices);
+
+
+}
+// for total
+$total_price=recursive_sum($int_of_add_prices);
+ if (isset($_POST['discount_amount'])) {
+        // Store sessional discount in session
+        if (isset($_POST['sessional_discount']) && !empty($_POST['sessional_discount'])) {
+            $_SESSION['sessional_discount'] = floatval($_POST['sessional_discount']);
+        }
+        
+        // Store event discount in session
+        if (isset($_POST['event_discount']) && !empty($_POST['event_discount'])) {
+            $_SESSION['event_discount'] = floatval($_POST['event_discount']);
+        }}
+            $selected_discount = $_POST['discount'] ?? '10% Discount';
+
+        $total_discount=apply_discount($total_price,$selected_discount);
+        $total_after_discount=$total_price-$total_discount;
+
 
 ?>
 <!DOCTYPE html>
@@ -58,6 +99,69 @@ if(isset($_POST["add_btn"])){
                           }
                         ?>
                     </h1>
+                </div>
+            </div>
+            <div class="form">
+                <form action="" method="POST">
+                    <div class="form-group col-md-8">
+                        <label for="recursive_array">Recursive array Input:</label>
+                        <input type="text" name="recursive_string" placeholder="Enter Your Numbers" id="recursive_array" class="w-75">
+                    </div>
+                    <div class="btn_recursive">
+                        <input type="submit" name="add_recursive"  value="Add Numbers" class="btn btn-outline-warning">
+                    </div>
+                </form>
+
+            </div>
+            <div class="recursive_sum">
+                <h1>Sum of Array: <?php echo recursive_sum($int_of_recursive_string);?></h1>
+            </div>
+            <div class="discount">
+                <form action="" method="post" class="d-flex flex-column justify-content-center">   
+                <div class="form-row">
+                    <div class="form-group col-md-5 px-3">
+                            <h3>Select Discount:</h3>
+                            <input type="radio" id="ten_percent" name="discount" value="10% Discount" checked>
+                            <label for="ten_percent">10% Discount</label>
+
+                            <input type="radio" id="sessional" name="discount" value="Sessional">
+                            <label for="sessional">Sessional</label>
+                            <input type="radio" id="event" name="discount" value="Event">
+                            <label for="event">Event</label>
+                        </div>
+                    <div class="d-flex">
+                        <div class="form-group col-md-4 px-3">
+                            <label for="prices">Enter All Prices</label>
+                            <input type="text" class="form-control" name="all_prices" id="prices" placeholder="All Prices">
+                        </div>
+                        <div class="form-group col-md-4 px-3">
+                            <label for="sessional_discount_amount">Enter Your Sessional Discount Amount</label>
+                            <input type="number" name="sessional_discount" class="form-control" id="transport" placeholder="Example:25 " >
+                        </div>
+                        <div class="form-group col-md-4 px-3">
+                            <label for="event_discount_amount">Enter Your Event Discount Amount</label>
+                            <input type="number" name="event_discount" class="form-control" id="transport" placeholder="Example:25" >
+                        </div>
+                    </div>
+                    
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-md-6 border-0">
+                        <input type="submit" name="add_prices" class="btn btn-outline-success py-1 px-5 rounded fs-3 my-3 mx-3" value="Add Prices">
+                    </div>
+                        <div class="col-md-6 border-0">
+                        <input type="submit" name="discount_amount" class="btn btn-outline-success py-1 px-5 rounded fs-3 my-3 mx-3" value="Add Discount Amount">
+                    </div>
+                    
+                    </div>
+                    
+
+                </div>
+               </form>
+                <div class="total_discount">
+                    <h1> Total Price: <?php echo $total_price;?></h1>
+                    <h1>Total Discount:<?php echo $total_discount;?> </h1>
+                    <h1>Total After Discount:<?php echo $total_after_discount;?> </h1>
                 </div>
             </div>
         </div>
