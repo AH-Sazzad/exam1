@@ -50,10 +50,29 @@ $total_price=recursive_sum($int_of_add_prices);
         if (isset($_POST['event_discount']) && !empty($_POST['event_discount'])) {
             $_SESSION['event_discount'] = floatval($_POST['event_discount']);
         }}
+        // discount mode
             $selected_discount = $_POST['discount'] ?? '10% Discount';
+            // call function
 
         $total_discount=apply_discount($total_price,$selected_discount);
         $total_after_discount=$total_price-$total_discount;
+
+        // Divide tow number
+         
+       if(isset($_POST["divide"])){
+        if(isset($_POST["number"]) && !empty($_POST["number"])){
+            $_SESSION['number']=floatval($_POST["number"]);
+        }
+        if(isset($_POST["divider"]) && !empty($_POST["divider"])){
+            $_SESSION['divider']=floatval($_POST["divider"]);
+        }
+        $division_result=divide_tow_number( $_SESSION['number'],$_SESSION['divider']);
+        $division_result_format=number_format($division_result,2);
+       }
+
+    //    Use function for division
+    
+
 
 
 ?>
@@ -163,10 +182,33 @@ $total_price=recursive_sum($int_of_add_prices);
                     <h1>Total Discount:<?php echo $total_discount;?> </h1>
                     <h1>Total After Discount:<?php echo $total_after_discount;?> </h1>
                 </div>
+                <div class="error form">
+                    <hr>
+                    <h1>Divide Tow Numbers</h1>
+                    <form action="" method="post">
+                        <div class="number form-group my-2">
+                            <input type="number" name="number" id="number" placeholder="Enter Your Number" required>
+                        </div>
+                        <div class="divider form-group my-1">
+                            <input type="number" name="divider" id="divider" placeholder="Enter Your divider" required>
+                        </div>
+                        <div class="divide_answer_btn m-1">
+                            <input type="submit" value="Divide" name="divide" class="btn btn-outline-info">
+                        </div>
+                    </form>
+                    <div class="result_division">
+                        <hr>
+                        <h2><?php 
+                        if(isset($_POST['divide'])){
+                            echo "Answer: {$_SESSION['number']}/{$_SESSION['divider']}= $division_result_format";
+                        }
+                        ?> </h2>
+                    </div>
+                </div>
             </div>
         </div>
 
-    </div>
+    
     <script src="bootstrap/bootstrap.bundle.js"></script>
 </body>
 </html>

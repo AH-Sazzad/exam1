@@ -105,8 +105,8 @@ define("Author","Asmaul Hasan Sazzad");
             </div>
             <div class="result my-4">
                 <div class=" d-flex flex-column justify-content-center align-items-center ">
-                    <h2>total Expense: <?php echo $total_format." ".$_POST['currency'];?></h2>
-                    <h2>Average Expense: <?php echo $average_format." ".$_POST['currency'];?></h2>
+                    <h2>total Expense: <?php echo $total_format." ".$currency;?></h2>
+                    <h2>Average Expense: <?php echo $average_format." ".$currency;?></h2>
                 </div>
                 <div class=" align-items-center d-flex flex-column justify-content-center">
                     <div>

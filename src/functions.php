@@ -121,6 +121,35 @@ function apply_discount($price,$discount_mood){
         }
          return $discountedPrices;
     }
+
+    // divide tow number
+    function divide_tow_number($number,$divider){
+        try{
+            if(!is_numeric($number)||!is_numeric($divider)){
+                throw new InvalidArgumentException("Both parameters must be numeric");
+            }
+            if($divider ==0){
+                throw new DivisionByZeroError("Can not divide by Zero");
+            }   
+            $result=$number/$divider;
+            return $result;
+        } catch (DivisionByZeroError $e) {
+        echo "Error: " . $e->getMessage() ;
+        return null;
+        
+    } catch (InvalidArgumentException $e) {
+        echo "Error: " . $e->getMessage() ;
+        return null;
+        
+    } catch (Exception $e) {
+        echo "Unexpected error: " . $e->getMessage() . "\n";
+        return null;
+        
+    } finally {
+        
+    }
+}
+    
     
    
 
